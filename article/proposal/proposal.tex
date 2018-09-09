@@ -1,0 +1,180 @@
+\documentclass[12pt]{article}
+
+\usepackage[brazilian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{thmtools,thm-restate}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\usepackage[singlelinecheck=false]{caption}
+\usepackage[backend=biber,url=true,doi=true,eprint=false,style=numeric]{biblatex}
+\usepackage{enumitem}
+\usepackage[justification=centering]{caption}
+\usepackage{indentfirst}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{listings}
+\usepackage[x11names,rgb,table]{xcolor}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{linegoal}
+\usepackage{geometry}
+\usetikzlibrary{snakes,arrows,shapes}
+
+\addbibresource{references.bib}
+\graphicspath{{imgs/}}
+
+\makeatletter
+\def\subsection{\@startsection{subsection}{3}%
+  \z@{.5\linespacing\@plus.7\linespacing}{.1\linespacing}%
+  {\normalfont}}
+\makeatother
+
+\makeatletter
+\patchcmd{\@setauthors}{\MakeUppercase}{}{}{}
+\makeatother
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\Val}{\text{Val}}
+\DeclareMathOperator*{\Ch}{\text{Ch}}
+\DeclareMathOperator*{\Pa}{\text{Pa}}
+\DeclareMathOperator*{\Sc}{\text{Sc}}
+\newcommand{\ov}{\overline}
+\newcommand{\tsup}{\textsuperscript}
+
+\newcommand\defeq{\mathrel{\overset{\makebox[0pt]{\mbox{\normalfont\tiny\sffamily def}}}{=}}}
+
+\newcommand{\algorithmautorefname}{Algorithm}
+\algrenewcommand\algorithmicrequire{\textbf{Entrada}}
+\algrenewcommand\algorithmicensure{\textbf{Saída}}
+\algrenewcommand\algorithmicif{\textbf{se}}
+\algrenewcommand\algorithmicthen{\textbf{então}}
+\algrenewcommand\algorithmicelse{\textbf{senão}}
+\algrenewcommand\algorithmicfor{\textbf{para todo}}
+\algrenewcommand\algorithmicdo{\textbf{faça}}
+\algnewcommand{\LineComment}[1]{\State\,\(\triangleright\) #1}
+
+\captionsetup[table]{labelsep=space}
+
+\theoremstyle{plain}
+
+\newcounter{dummy-def}\numberwithin{dummy-def}{section}
+\newtheorem{definition}[dummy-def]{Definition}
+\newcounter{dummy-thm}\numberwithin{dummy-thm}{section}
+\newtheorem{theorem}[dummy-thm]{Theorem}
+\newcounter{dummy-prop}\numberwithin{dummy-prop}{section}
+\newtheorem{proposition}[dummy-prop]{Proposition}
+\newcounter{dummy-corollary}\numberwithin{dummy-corollary}{section}
+\newtheorem{corollary}[dummy-corollary]{Corollary}
+\newcounter{dummy-lemma}\numberwithin{dummy-lemma}{section}
+\newtheorem{lemma}[dummy-lemma]{Lemma}
+\newcounter{dummy-ex}\numberwithin{dummy-ex}{section}
+\newtheorem{exercise}[dummy-ex]{Exercise}
+\newcounter{dummy-eg}\numberwithin{dummy-eg}{section}
+\newtheorem{example}[dummy-eg]{Example}
+
+\numberwithin{equation}{section}
+
+\newcommand{\set}[1]{\mathbf{#1}}
+\newcommand{\pr}{\text{P}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ddspn}[2]{\frac{\partial#1}{\partial#2}}
+\newcommand{\iddspn}[2]{\partial#1/\partial#2}
+\newcommand{\indep}{\perp}
+\renewcommand{\implies}{\Rightarrow}
+
+\newcommand{\bigo}{\mathcal{O}}
+
+\setlength{\parskip}{1em}
+
+\lstset{frameround=fttt,
+	numbers=left,
+	breaklines=true,
+	keywordstyle=\bfseries,
+	basicstyle=\ttfamily,
+}
+
+\newcommand{\code}[1]{\lstinline[mathescape=true]{#1}}
+\newcommand{\mcode}[1]{\lstinline[mathescape]!#1!}
+
+\title{%
+  Visualizing Generative Sum-Product Networks on Image Completion\\~\\
+  {\normalfont Proposta de Projeto MAC6914}
+}
+\author{Renato Lui Geh, NUSP: 8536030}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Introdução}
+
+Redes soma-produto (SPNs, de Sum-Product Networks) são modelos probabilísticos baseados em grafos
+(PGMs, de Probabilistic Graphical Models) que representam distribuições de probabilidade tratáveis.
+PGMs clássicas, como Redes Bayesianas e Redes de Markov, têm inferência e aprendizado exato
+intratável, o que torna inferência aproximada a alternativa factível. Em contrapartida, SPNs
+possuem inferência exata em tempo linear, além de possuírem uma arquitetura profunda que garantem
+grande expressividade~\cite{shallow-vs-deep}. Por causa destas características, SPNs tiveram
+resultados promissoras em várias aplicações, incluindo compleição e classificação de
+imagem~\cite{poon-domingos,gens-domingos,clustering}.
+
+Uma SPN é um DAG cujos nós internos são somas ponderadas ou produtos. Folhas são distribuições
+monovariadas tratáveis. O escopo de uma SPN é o conjunto de variáveis que aparecem em sua raíz e
+todos seus descendentes. É possível interpretar nós somas como relações de semelhança entre
+os escopos dos filhos, enquanto que produtos podem ser vistos como relações de independência entre
+filhos. Apesar de inferência exata ser linear, é possível computar mais rapidamente a probabilidade
+maximum-a-priori (MAP) usando o algoritmo max-product. No entanto, esta alternativa gera resultados
+aproximados.
+
+A tarefa de compleição de imagem consiste em, dada uma imagem incompleta, predizer os valores dos
+pixels restantes. Este problema é complicado pois muitas vezes é necessário que o modelo capture
+tanto interações locais quanto remotas. No caso de interações locais, um exemplo é que valores em
+uma região próxima tendem a ter cores e intensidade semelhantes. Interações remotas incluem algum
+objeto que sempre aparece quando outro está na imagem, indicando alguma dependência entre estas
+regiões.
+
+Neste projeto pretende-se explorar como SPNs gerativas modelam compleição de imagem.
+Em~\cite{visualizing}, Vergari \textit{et al} apontam características interessantes de SPNs,
+inclusive propondo uma interpretação de SPNs como Perceptrons Multi-Camada. No entanto, este
+projeto busca interpretar SPNs exclusivamente no âmbito de compleição de imagem.
+
+\section{Plano de trabalho}
+
+A biblioteca GoSPN\footnote{Disponível em \url{https://github.com/RenatoGeh/gospn}} será usada para
+construir e aprender as SPNs. Os modelos serão treinados com dois algoritmos de aprendizado para
+SPNs. O primeiro é baseado na arquitetura de Dennis e Ventura~\cite{clustering}, e o segundo no de
+Gens e Domingos~\cite{gens-domingos}.
+
+Serão usados para compleição os datasets Olivetti\footnote{Disponível em
+\url{https://www.cl.cam.ac.uk/research/dtg/attarchive/facedatabase.html}} e
+Caltech-101\footnote{Disponível em \url{http://www.vision.caltech.edu/Image_Datasets/Caltech101/}}.
+O primeiro é um dataset de rostos, contendo 10 imagens de 40 pessoas cada em escala de cinza,
+chegando num total de 400 imagens. O segundo é um dataset de objetos. São 101 categorias de imagens
+coloridas de objetos de diferentes tamanhos e resoluções. Cada categoria contém de 40 a até 800
+imagens.
+
+Para se entender e visualizar melhor como o modelo representa as dependências e semelhanças entre
+variáveis, após treinadas as SPNs serão analisadas a cada nó, visualizando-se o escopo que cada
+filho de um nó representa na imagem. Além disso, espera-se comparar resultados entre compleição de
+imagem com inferência aproximada, usando o algoritmo max-product, e inferência exata. Finalmente,
+serão feitos experimentos com o dataset Caltech-101 em escala de cinza e em escala RGB a fim de
+explorar o quão bem SPNs modelam imagens multicanais com os atuais algoritmos de aprendizado.
+
+\section{Objetivos}
+
+Ao final do artigo, espera-se entender como SPNs treinadas com os algoritmos Dennis-Ventura e
+Gens-Domingos modelam imagens. Em~\cite{cmc2017}, já foi mostrado que computar o MAP em SPNs é
+NP-difícil, e adicionalmente que o algoritmo max-product acha aproximações dentro de um fator
+$2^{c-n}$ para uma constante $c<1$. No entanto, quer-se saber se, em compleição de imagem, tal
+diferença é impactante na prática.
+
+\printbibliography[]
+
+\end{document}

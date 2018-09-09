@@ -1,0 +1,67 @@
+[0] Config.pm:302> INFO - This is Biber 2.11
+[0] Config.pm:305> INFO - Logfile is 'proposal.blg'
+[28] biber:313> INFO - === Sun Sep  9, 2018, 18:35:38
+[46] Biber.pm:371> INFO - Reading 'proposal.bcf'
+[107] Biber.pm:857> INFO - Found 6 citekeys in bib section 0
+[119] Biber.pm:3976> INFO - Processing section 0
+[128] Biber.pm:4136> INFO - Looking for bibtex format file 'references.bib' for section 0
+[130] bibtex.pm:1500> INFO - LaTeX decoding ...
+[177] bibtex.pm:1316> INFO - Found BibTeX data source 'references.bib'
+[212] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 9, warning: 1 characters of junk seen at toplevel
+[212] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 17, warning: 1 characters of junk seen at toplevel
+[212] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 25, warning: 1 characters of junk seen at toplevel
+[212] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 33, warning: 1 characters of junk seen at toplevel
+[212] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 40, warning: 1 characters of junk seen at toplevel
+[213] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 46, warning: 1 characters of junk seen at toplevel
+[213] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 53, warning: 1 characters of junk seen at toplevel
+[213] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 60, warning: 1 characters of junk seen at toplevel
+[213] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 67, warning: 1 characters of junk seen at toplevel
+[213] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 74, warning: 1 characters of junk seen at toplevel
+[213] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 81, warning: 1 characters of junk seen at toplevel
+[213] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 88, warning: 1 characters of junk seen at toplevel
+[213] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 95, warning: 1 characters of junk seen at toplevel
+[213] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 102, warning: 1 characters of junk seen at toplevel
+[213] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 110, warning: 1 characters of junk seen at toplevel
+[214] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 117, warning: 1 characters of junk seen at toplevel
+[214] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 123, warning: 1 characters of junk seen at toplevel
+[214] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 129, warning: 1 characters of junk seen at toplevel
+[214] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 136, warning: 1 characters of junk seen at toplevel
+[214] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 143, warning: 1 characters of junk seen at toplevel
+[214] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 149, warning: 1 characters of junk seen at toplevel
+[214] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 156, warning: 1 characters of junk seen at toplevel
+[214] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 163, warning: 1 characters of junk seen at toplevel
+[214] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 170, warning: 1 characters of junk seen at toplevel
+[214] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 177, warning: 1 characters of junk seen at toplevel
+[215] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 184, warning: 1 characters of junk seen at toplevel
+[215] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 191, warning: 1 characters of junk seen at toplevel
+[215] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 205, warning: 1 characters of junk seen at toplevel
+[215] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 213, warning: 1 characters of junk seen at toplevel
+[215] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 220, warning: 1 characters of junk seen at toplevel
+[215] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 227, warning: 1 characters of junk seen at toplevel
+[215] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 233, warning: 1 characters of junk seen at toplevel
+[215] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 239, warning: 1 characters of junk seen at toplevel
+[215] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 247, warning: 1 characters of junk seen at toplevel
+[215] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 254, warning: 1 characters of junk seen at toplevel
+[216] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 261, warning: 1 characters of junk seen at toplevel
+[216] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 268, warning: 1 characters of junk seen at toplevel
+[216] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 274, warning: 1 characters of junk seen at toplevel
+[216] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 282, warning: 1 characters of junk seen at toplevel
+[216] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 289, warning: 1 characters of junk seen at toplevel
+[216] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 296, warning: 1 characters of junk seen at toplevel
+[216] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 304, warning: 1 characters of junk seen at toplevel
+[216] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 312, warning: 1 characters of junk seen at toplevel
+[216] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 319, warning: 1 characters of junk seen at toplevel
+[216] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 327, warning: 1 characters of junk seen at toplevel
+[217] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 335, warning: 1 characters of junk seen at toplevel
+[217] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 343, warning: 1 characters of junk seen at toplevel
+[217] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 351, warning: 1 characters of junk seen at toplevel
+[217] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 359, warning: 1 characters of junk seen at toplevel
+[217] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 366, warning: 1 characters of junk seen at toplevel
+[217] Utils.pm:193> WARN - BibTeX subsystem: /tmp/HMLrXqFCZE/references.bib_32535.utf8, line 373, warning: 1 characters of junk seen at toplevel
+[229] UCollate.pm:68> INFO - Overriding locale 'pt-BR' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[229] UCollate.pm:68> INFO - Overriding locale 'pt-BR' defaults 'variable = shifted' with 'variable = non-ignorable'
+[229] Biber.pm:3804> INFO - Sorting list 'nty/global//global/global' of type 'entry' with template 'nty' and locale 'pt-BR'
+[230] Biber.pm:3810> INFO - No sort tailoring available for locale 'pt-BR'
+[238] bbl.pm:617> INFO - Writing 'proposal.bbl' with encoding 'UTF-8'
+[241] bbl.pm:720> INFO - Output to proposal.bbl
+[241] Biber.pm:110> INFO - WARNINGS: 51
