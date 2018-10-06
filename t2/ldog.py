@@ -8,7 +8,7 @@ BASE = None
 EXT = None
 
 def parse_args():
-  if (2 > len(sys.argv) > 3) or ("-h" in sys.argv):
+  if (2 > len(sys.argv) or len(sys.argv) > 3) or ("-h" in sys.argv):
     print("Usage " + sys.argv[0] + " img [-w] [-h]")
     print("  Arguments:")
     print("    img - image to apply filters")
@@ -82,14 +82,27 @@ def wait_key(c):
         return v
   return None
 
-def view_image(title, img):
-  cv2.imshow(title, img)
+def draw_caption(text, img):
+  d, b = cv2.getTextSize(text, cv2.FONT_HERSHEY_COMPLEX, 0.75, 1)
+  d = [d[0], d[1]]
+  d[1] += b
+  r = 0
+  if img.shape[1] < d[0]:
+    r = d[0]-img.shape[1]
+  timg = cv2.copyMakeBorder(img, 0, d[1], 0, r, cv2.BORDER_CONSTANT, 0)
+  cv2.putText(timg, text, (0, img.shape[0]+d[1]-b), cv2.FONT_HERSHEY_COMPLEX, 0.75, (255, 255, 255), 1, cv2.LINE_AA)
+  return timg
+
+def view_image(title, img, subtitle=""):
+  timg = draw_caption(title + subtitle, img)
+  cv2.imshow(title, timg)
   print("Press 'q' to kill all windows.")
   wait_key('q')
   cv2.destroyAllWindows()
 
-def add_image(title, img):
-  cv2.imshow(title, img)
+def add_image(title, img, subtitle=""):
+  timg = draw_caption(title + subtitle, img)
+  cv2.imshow(title, timg)
 
 def flush_imview():
   print("Press 'q' to kill all windows.")
@@ -143,25 +156,30 @@ def compare_log_dog(lImg, logImg, dogImg):
     add_image("Difference of Gaussian", dogImg)
     flush_imview()
 
+def half_img(img):
+  return img[::2, 1::2]
+
 def create_raw_pyramid(img, n):
   print("Creating raw pyramid...")
-  P = []
+  P = [img]
   L = img
-  for i in range(n):
-    d = tuple((np.asarray(L.shape)/2).astype(int))
-    L = cv2.resize(L, d)
+  for i in range(n-1):
+    # d = tuple(np.flip((np.asarray(L.shape)/2).astype(int)))
+    # L = cv2.resize(L, d)
+    L = half_img(L)
     P.append(L)
   return P
 
 def create_gaussian_pyramid(img, n):
   print("Creating gaussian pyramid...")
   s = open_ask("Gaussian kernel size before subsampling? Input format: n m", 2, int)
-  P = []
+  P = [img]
   L = img
-  for i in range(n):
+  for i in range(n-1):
     G = cv2.GaussianBlur(L, tuple(s), 0)
-    d = tuple((np.asarray(L.shape)/2).astype(int))
-    L = cv2.resize(G, d)
+    # d = tuple(np.flip((np.asarray(L.shape)/2).astype(int)))
+    # L = cv2.resize(G, d)
+    L = half_img(G)
     P.append(L)
   return P
 
@@ -174,8 +192,8 @@ def compare_pyramids(img):
   print("Press i to go up a pyramid level.")
   print("Press q when you're done.")
   while True:
-    add_image("Raw pyramid", rP[i])
-    add_image("Gaussian pyramid", gP[i])
+    add_image("Raw pyramid", rP[i], " - level " + str(i))
+    add_image("Gaussian pyramid", gP[i], " - level " + str(i))
     c = wait_key(['j', 'k', 'q'])
     if c == 'j':
       i = -min(0, -i+1)
@@ -193,16 +211,16 @@ def save_pyramid(P, ap):
 
 def run():
   I = read_image(BASE + EXT)
-  # write_image("gray", I)
-  # G1, G2 = apply_gaussian(I)
-  # write_image("G1", G1)
-  # write_image("G2", G2)
-  # iL, gL = apply_laplacian(I, G1)
-  # write_image("L", iL)
-  # write_image("LoG", gL)
-  # D = apply_difference(G1, G2)
-  # write_image("DoG", D)
-  # compare_log_dog(iL, gL, D)
+  write_image("gray", I)
+  G1, G2 = apply_gaussian(I)
+  write_image("G1", G1)
+  write_image("G2", G2)
+  iL, gL = apply_laplacian(I, G1)
+  write_image("L", iL)
+  write_image("LoG", gL)
+  D = apply_difference(G1, G2)
+  write_image("DoG", D)
+  compare_log_dog(iL, gL, D)
   rP, gP = compare_pyramids(I)
   save_pyramid(rP, "raw_pyramid")
   save_pyramid(gP, "gauss_pyramid")
