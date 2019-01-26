@@ -1,0 +1,247 @@
+\documentclass[12pt]{article}
+
+\usepackage[brazilian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{thmtools,thm-restate}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\usepackage[singlelinecheck=false]{caption}
+\usepackage[backend=biber,url=true,doi=true,eprint=false,style=numeric]{biblatex}
+\usepackage{enumitem}
+\usepackage[justification=centering]{caption}
+\usepackage{indentfirst}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{listings}
+\usepackage[x11names,rgb,table]{xcolor}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{linegoal}
+\usepackage{geometry}
+\usetikzlibrary{snakes,arrows,shapes}
+
+\addbibresource{references.bib}
+\graphicspath{{imgs/}}
+
+\makeatletter
+\def\subsection{\@startsection{subsection}{3}%
+  \z@{.5\linespacing\@plus.7\linespacing}{.1\linespacing}%
+  {\normalfont}}
+\makeatother
+
+\makeatletter
+\patchcmd{\@setauthors}{\MakeUppercase}{}{}{}
+\makeatother
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\Val}{\text{Val}}
+\DeclareMathOperator*{\Ch}{\text{Ch}}
+\DeclareMathOperator*{\Pa}{\text{Pa}}
+\DeclareMathOperator*{\Sc}{\text{Sc}}
+\newcommand{\ov}{\overline}
+\newcommand{\tsup}{\textsuperscript}
+
+\newcommand\defeq{\mathrel{\overset{\makebox[0pt]{\mbox{\normalfont\tiny\sffamily def}}}{=}}}
+
+\newcommand{\algorithmautorefname}{Algorithm}
+\algrenewcommand\algorithmicrequire{\textbf{Entrada}}
+\algrenewcommand\algorithmicensure{\textbf{Saída}}
+\algrenewcommand\algorithmicif{\textbf{se}}
+\algrenewcommand\algorithmicthen{\textbf{então}}
+\algrenewcommand\algorithmicelse{\textbf{senão}}
+\algrenewcommand\algorithmicfor{\textbf{para todo}}
+\algrenewcommand\algorithmicdo{\textbf{faça}}
+\algnewcommand{\LineComment}[1]{\State\,\(\triangleright\) #1}
+
+\captionsetup[table]{labelsep=space}
+
+\theoremstyle{plain}
+
+\newcounter{dummy-def}\numberwithin{dummy-def}{section}
+\newtheorem{definition}[dummy-def]{Definition}
+\newcounter{dummy-thm}\numberwithin{dummy-thm}{section}
+\newtheorem{theorem}[dummy-thm]{Theorem}
+\newcounter{dummy-prop}\numberwithin{dummy-prop}{section}
+\newtheorem{proposition}[dummy-prop]{Proposition}
+\newcounter{dummy-corollary}\numberwithin{dummy-corollary}{section}
+\newtheorem{corollary}[dummy-corollary]{Corollary}
+\newcounter{dummy-lemma}\numberwithin{dummy-lemma}{section}
+\newtheorem{lemma}[dummy-lemma]{Lemma}
+\newcounter{dummy-ex}\numberwithin{dummy-ex}{section}
+\newtheorem{exercise}[dummy-ex]{Exercise}
+\newcounter{dummy-eg}\numberwithin{dummy-eg}{section}
+\newtheorem{example}[dummy-eg]{Example}
+
+\numberwithin{equation}{section}
+
+\newcommand{\set}[1]{\mathbf{#1}}
+\newcommand{\pr}{\text{P}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ddspn}[2]{\frac{\partial#1}{\partial#2}}
+\newcommand{\iddspn}[2]{\partial#1/\partial#2}
+\newcommand{\indep}{\perp}
+\renewcommand{\implies}{\Rightarrow}
+
+\newcommand{\bigo}{\mathcal{O}}
+
+\setlength{\parskip}{1em}
+
+\lstset{frameround=fttt,
+	numbers=left,
+	breaklines=true,
+	keywordstyle=\bfseries,
+	basicstyle=\ttfamily,
+}
+
+\newcommand{\code}[1]{\lstinline[mathescape=true]{#1}}
+\newcommand{\mcode}[1]{\lstinline[mathescape]!#1!}
+
+\title{%
+  Segmentação de Imagem\\~\\
+  {\normalfont Tarefa 3 de MAC6914}
+}
+\author{Renato Lui Geh, NUSP: 8536030}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Introdução}
+
+Para a Tarefa 3, usamos modelos pré-treinados~\cite{trained-deeplab} do framework
+DeepLab~\cite{deeplab}. As arquiteturas do framework usadas foram Xception~\cite{deeplabv3plus2018}
+e MobileNetv2~\cite{mobilenetv22018}. O framework também usa a busca de arquitetura descrita
+em~\cite{dpc2018}.
+
+Para a arquitetura Xception, foram testados dois diferentes \textit{output strides}. Este parâmetro
+será denotado por $O$. Nos experimentos, usamos $O=8$ e $O=16$.
+
+O dataset escolhido para segmentar foi o Cat vs Dogs
+\footnote{\url{https://www.kaggle.com/c/dogs-vs-cats/data}}.
+
+\section{Código}
+
+O script anexado junto à tarefa (\code{segment.py}) foi escrito em Python3 e segmenta as imagens
+do dataset Cats vs Dogs, salvando as imagens em um diretório \code{out}. Para replicar os
+resultados deste relatório, precisamos primeiro preparar o dataset e o framework:
+
+\begin{lstlisting}[language=Bash,numbers=none]
+git clone https://github.com/bonlime/keras-deeplab-v3-plus
+unzip cats-vs-dogs.zip # Dataset
+cd keras-deeplab-v3-plus
+cp /path/do/script/segment.py .
+\end{lstlisting}
+
+Após feito isso, podemos rodar o script, que tem como argumentos:
+
+\begin{lstlisting}[language=Bash, numbers=none]
+Usage: segment.py backbone [param] [weights]
+  backbone - 'xception' or 'mobilenetv2'
+  param    - OS for xception
+  weights  - 'random' or 'pascal_voc' (default)
+\end{lstlisting}
+
+Onde o argumento \code{backbone} é ou \code{xception} ou \code{mobilenetv2}. O argumento
+\code{param} é o parâmetro $O$ se Xception. O último parâmetro \code{weights} indica se a rede deve
+usar os pesos pré-treinados ou se deve utilizar pesos aleatorizados.
+
+Ambas as redes foram treinadas com imagens $(512, 512, 3)$. Antes de segmentar as imagens,
+redimensionamos as imagens para $512\times 512$ e normalizamos as intensidades dos pixels. A
+captura dos rótulos é feita buscando o $\argmax$ dos \textit{logits} da última camada da rede.
+
+\section{Resultados}
+
+Os resultados foram geralmente bons. As imagens originais, juntamente com suas segmentações podem
+ser encontradas nos subdiretórios deste relatório. Cada subdiretório é nomeado a partir do nome da
+arquitetura seguido de seu parâmetro. Neste relatório apenas mostraremos os resultados ruins ou
+surpreendentes.
+
+Apresentaremos alguns resultados extraídos a partir do código usado.
+
+\begin{figure}[H]
+  \includegraphics{xception_16/cat_141.png}
+  \caption{A imagem acima não conseguiu capturar todos os gatos, mas identificou corretamente o que está mais
+  centralizado e o do canto inferior esquerdo. Apesar de estar parcialmente obstruído, a rede
+  conseguiu identificar a parte posterior do gato.}
+\end{figure}
+
+\begin{figure}[H]
+  \includegraphics{xception_16/cat_15.png}
+  \caption{Quando há objetos finos obstruindo os animais, a rede teve dificuldade em distinguir o que é ou não
+  gato ou cachorro.}
+\end{figure}
+
+\begin{figure}[H]
+  \includegraphics{xception_16/cat_25.png}
+  \caption{A presença de humanos foi capturada de forma correta na maior parte dos casos.}
+\end{figure}
+
+\begin{figure}[H]
+  \includegraphics{xception_16/cat_31.png}
+  \caption{Em casos em que há objetos inanimados que contém pelugem ou características parecidas
+  com a de animais, a rede confunde-se, classificando incorretamente como animal.}
+\end{figure}
+
+\begin{figure}[H]
+  \includegraphics{xception_16/dog_103.png}
+  \caption{Quando regiões da imagem são muito escuras, a rede acha que trata-se de
+  \textit{background}, mesmo quando regiões adjacentes claramente não são.}
+\end{figure}
+
+\begin{figure}[H]
+  \includegraphics{xception_16/dog_153.png}
+  \caption{Como a rede foi pré-treinada em um dataset multi-classes, o modelo ainda consegue
+  identificar objetos além de cachorros, gatos e humanos. No caso da figura acima, a rede
+  identifica um computador.}
+\end{figure}
+
+\begin{figure}[H]
+  \includegraphics{xception_16/dog_26.png}
+  \caption{A presença de legendas ou letras não impactou na performance da rede.}
+\end{figure}
+
+\section{Comparação entre arquiteturas}
+
+O modelo MobileNetv2 é claramente mais rápido de se aplicar segmentação, já que a rede foi
+construída com o intuito de ser executada em aparelhos de pouco poder de processamento. Já que a
+arquitetura Xception contém o dobro do número de parâmetros da MobileNetv2, é de se esperar que a
+primeira tenha melhor resultados do que a segunda. De fato a Xception proporcionou melhores
+segmentações.
+
+Com relação à mudança de parâmetros, para a estrutura Xception, um parâmetro de $O=8$ teve melhores
+resultados em geral do que $O=16$, como era de se esperar. Não houve diferença significativa no
+tempo de segmentação com diferentes $O$. No entanto, supomos que a diferença foi significativa no
+treino.
+
+Um experimento interessante foi, ao invés de usar pesos treinados, aleatorizar todos os filtros.
+Com isso foi possível observar como a estrutura é importante na identificação de objetos. Mesmo
+com pesos aleatórios, a estrutura Xception conseguiu identificar o contorno dos animais, enquanto
+que a estrutura MobileNetv2, que é significantemente menor e menos complexa teve resultados mais
+esperados de um modelo aleatório.
+
+\begin{figure}[H]
+  \includegraphics{xception_8_random/cat_100.png}
+  \includegraphics{mobilenetv2_random/cat_100.png}
+  \caption{A imagem de cima mostra a segmentação feita em uma Xception com $O=8$ aleatória,
+  enquanto que a de baixo foi feita numa MobileNetv2 aleatória.}
+\end{figure}
+
+Em comparação com a Xception com $O=16$, é possível ver que o \textit{stride} tem grande impacto no
+nível de detalhe da segmentação.
+
+\begin{figure}[H]
+  \includegraphics{xception_16_random/cat_100.png}
+  \caption{Xception aleatória com $O=16$.}
+\end{figure}
+
+\printbibliography[]
+
+\end{document}
