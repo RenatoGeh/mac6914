@@ -150,8 +150,8 @@ article. Finally, we show results and provide a conclusion of our findings.
 \label{sec:back}
 
 An SPN can be seen as a DAG with restrictions with respect to its node types and weighted edges.
-Let $n$ be a graph node. The set of nodes $\Pa(n)$ and $\Ch(n)$ are the parents and children of
-$n$. A weighted edge $i\to j$ is denoted by $w_{i,j}$.
+Let $n$ be a graph node. The set of nodes $\Ch(n)$ is the set of children of $n$. A weighted edge
+$i\to j$ is denoted by $w_{i,j}$.
 
 \begin{definition}
   A sum-product network (SPN) is a directed acyclic graph. A node $n$ of an SPN can either be a:
@@ -164,7 +164,7 @@ $n$. A weighted edge $i\to j$ is denoted by $w_{i,j}$.
 
 In this paper, we assume that all SPN leaves (i.e. node type 3) are tractable univariate
 distributions, that is, computing its mode or partition function takes constant time. The scope of
-a node $\Sc(n)$ is the union set of the scope of its children.
+a node, denoted by $\Sc(n)$, is the union set of the scope of its children.
 
 \begin{definition}[Completeness]
   An SPN is complete iff every child of a sum node has the same scope as its siblings.
@@ -176,10 +176,10 @@ a node $\Sc(n)$ is the union set of the scope of its children.
 
 A complete and decomposable SPN correctly computes the probability of evidence of the modeled
 distribution. An SPN that correctly represents a probability distribution is said to be valid. In
-fact, a complete and consistent (i.e. no two children of an SPN node have contradicting variable
-values) SPN is sufficient (though not necessary) for validity~\cite{poon11}. However,
-learning decomposable SPNs is easier, and it has been shown that decomposability is as expressive
-as consistency~\cite{peharz15}.
+fact, completeness and consistency (i.e. no two children of an SPN node have contradicting variable
+values) is sufficient (though not necessary) for validity~\cite{poon11}. However, learning
+decomposable SPNs is easier, and it has been shown that decomposability is as expressive as
+consistency~\cite{peharz15}.
 
 Let $\mathbf{X}=\{X_1=x_1,X_2,=x_2,\ldots,X_n=x_n\}$ be a valuation and $S$ an SPN. The value of
 $S$ is the value of its root, and is denoted by $S(\mathbf{X})$. Inference in SPNs is done through
@@ -330,11 +330,11 @@ each child models a different object or texture.
 
 We build our visualization technique on top of this interpretation of SPNs. Our method computes the
 scope of each node. At each product node, we color different regions different colors to distinct
-between them. For sum nodes, we take two approaches. The first takes every sum node's MPE and
-writes it to a file, showing what the most probable objects and textures the node captures. The
-second is restricted to only sum nodes with at least one product as parent, as sums with only sum
-nodes as parents are not as expressive and often model only minor changes. We also skip any nodes
-whose scopes are too small.
+between them. For sum nodes, we take two approaches. Variation 2 takes every sum node's MPE and
+writes it to a file, showing what the most probable objects and textures the node captures, whilst
+variation 1 is restricted to only sum nodes with at least one product as parent, as sums with only
+sum nodes as parents are not as expressive and often model only minor changes. We also skip any
+nodes whose scopes are too small.
 
 By traversing the graph in a breadth-first search manner, we are able to restrict scopes which are
 too small. Once we identify that the scope of a node has fallen bellow a threshold, we no longer
@@ -591,8 +591,8 @@ consequence of narrowing the node's scope.
     forehead are correctly identified and segmented.\label{fig:g-oliv}}
 \end{figure}
 
-We found that, under a low quantity of samples, G-SPNs were much more shallow than D-SPNs. We
-speculate this is due to the approximate nature of the G-test variable independence algorithm.
+We found that, under a low quantity of samples, G-SPNs were less deep than D-SPNs. We speculate
+this is due to the approximate nature of the G-test variable independence algorithm.
 \autoref{fig:g-cal} shows how fragmented scopes became, which indicate G-SPNs are much wider and
 shallower than D-SPNs.
 
@@ -600,7 +600,7 @@ Applying VisualizeSPN to the Olivetti dataset yielded some interesting results. 
 were very capable of splitting facial features into significant regions. \autoref{fig:g-oliv} shows
 how the SPNs were able to learn how to segment the images to identify key facial regions. It was
 also able to distinguish between background and face, as evidenced by the second column. The third
-column indicates that the SPN was able to discriminate between left and right side. This is
+column suggests that the SPN was able to discriminate between left and right side. This is
 important, as the Olivetti dataset contains images with slightly turned faces. Reconstruction must
 take into account the face's side to provide accurate predictions. In G-SPNs case, it is not clear
 how the SPN identifies features, but it seems to provide human-like reconstructions
@@ -615,7 +615,7 @@ as~\autoref{fig:g-oliv} shows. It also seems to distinguish skin color better th
     \centering\centerline{\includegraphics[width=\linewidth]{imgs/gens_oliv/0/products/10.png}}
   \end{minipage}
   \begin{minipage}[c]{.21\linewidth}
-    \centering\centerline{\includegraphics[width=\linewidth]{imgs/gens_oliv/0/products/14.png}}
+    \centering\centerline{\includegraphics[width=\linewidth]{imgs/gens_oliv/0/products/3.png}}
   \end{minipage}
   \begin{minipage}[c]{.21\linewidth}
     \centering\centerline{\includegraphics[width=\linewidth]{imgs/gens_oliv/0/products/28.png}}
@@ -676,9 +676,10 @@ as~\autoref{fig:g-oliv} shows. It also seems to distinguish skin color better th
 \label{sec:conc}
 
 We proposed a new technique of visualizing SPNs in the domain of image reconstruction. The method
-was applied on the Caltech-101 and Olivetti Faces dataset, on SPNs learned with both
-LearnSPN~\cite{gens13} and the Dennis-Ventura clustering algorithm~\cite{dennis12}. We found this
-kind of visualization provided some interesting insights on how SPNs learn data.
+was applied on the Caltech-101~\cite{fei04} and Olivetti Faces~\cite{samaria94} dataset, on SPNs
+learned with both LearnSPN~\cite{gens13} and the Dennis-Ventura clustering
+algorithm~\cite{dennis12}. We found this kind of visualization provided some interesting insights
+on how SPNs learn data.
 
 % To start a new column (but not a new page) and help balance the last-page
 % column length use \vfill\pagebreak.
